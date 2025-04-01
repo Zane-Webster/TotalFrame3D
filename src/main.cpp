@@ -1,5 +1,5 @@
 /*
-TOTALFRAME3D (c)
+TOTALFRAME3D
 
 Mid level game framework for C++ based on SDL3 and OpenGL 3.3
 

@@ -1,12 +1,10 @@
-# TotalFrame3D (c)
-**Version 0.0.1**
-_ZANE WEBSTER_
-_2024 - 2025_
-
-## About
+# TotalFrame3D
 TotalFrame3D is a mid-level framework written in C++ for prototyping and other general use.
 
-## Credit
+## Authors
+TotalFrame3D is currently being developed by Zane Webster.
+
+## Credits and Licensing
 This project uses the following third-party libraries:
 
 - **GLEW** (MIT License) - https://github.com/nigels-com/glew
