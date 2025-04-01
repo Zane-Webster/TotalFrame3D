@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
     MOVEMENT_KEYSET movement_keys = TotalFrame::MOVEMENT_KEYS[keyset];
 
     ////////// LOAD SHADERS
-    shader_handler.ReadShaderSourceFolder("shader");
+    shader_handler.ReadShaderSourceFolder("res/shader");
 
     ////////// LOAD IMAGES
 

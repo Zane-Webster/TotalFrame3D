@@ -7,19 +7,20 @@ LIBS = -lmingw32 -lSDL3 -lSDL3_image -lSDL3_mixer -lSDL3_ttf -lglew32 -lopengl32
 # Directories
 SRC_DIR = src
 OBJ_DIR = o
+BIN_DIR = bin
 
 # Sources and objects
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
 # Output executable
-TARGET = Main
+TARGET = $(BIN_DIR)/Main
 
 # Default target
 all: $(TARGET)
 
 # Link object files to create the executable
-$(TARGET): $(OBJS)
+$(TARGET): $(BIN_DIR) $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 # Compile each source file to an object file
@@ -30,9 +31,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
+# Create the bin directory if it doesn't exist
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
 # Clean up build files
 clean:
-	rm -rf $(OBJ_DIR) $(TARGET)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
 # Phony targets
 .PHONY: all clean
