@@ -1,9 +1,9 @@
 /*
-TOTAL FRAME
+TOTALFRAME3D (c)
 
-Mid level game framework for C++ based on SDL2
+Mid level game framework for C++ based on SDL3 and OpenGL 3.3
 
-ZANE WEBSTER 
+ZANE WEBSTER
 2024-2025
 */
 
