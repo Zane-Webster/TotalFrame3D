@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <array>
+#include <vector>
 
 #include <SDL3/SDL.h>
 

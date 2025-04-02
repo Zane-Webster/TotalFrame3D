@@ -33,6 +33,7 @@ ZANE WEBSTER
 #include "CameraHandler.h"
 #include "Triangle.h"
 #include "Object.h"
+#include "Grid.h"
 
 int main(int argc, char* argv[]) {
     ////////// APP INITILIZATION
