@@ -40,10 +40,10 @@ int main(int argc, char* argv[]) {
     TTF_Init();
 
     ////////// APP HANDLERS
-    WindowHandler window_handler(1280, 720, {0.05f, 0.1f, 0.30f, 1.0f}, "Total Frame Application", 60.0f);
+    WindowHandler window_handler(1280, 720, {0.05f, 0.1f, 0.30f, 1.0f}, "TotalFrame3D Application", 60.0f);
     AudioHandler audio_handler;
     ShaderHandler shader_handler(window_handler.context);
-    CameraHandler camera(glm::vec3(0.0f, 0.0f, 6.0f), window_handler.width, window_handler.height, 0.025f, 0.1f, 70.0f);
+    CameraHandler camera({0.0f, 0.0f, 6.0f}, window_handler.width, window_handler.height, 0.025f, 0.1f, 70.0f);
 
     ////////// APP VARIABLES
     //// GENERAL
