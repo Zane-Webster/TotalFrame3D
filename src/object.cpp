@@ -4,8 +4,8 @@
 // DEFAULT CONSTRUCTOR
 //=============================
 
-Object::Object(std::string p_name, TotalFrame::OBJECT_TYPE p_type, std::string p_obj_path, GLuint p_shader_program) : name(p_name), type(p_type) {
-    Object::Load(p_obj_path, p_shader_program);
+Object::Object(std::string p_name, glm::vec3 p_position, TotalFrame::OBJECT_TYPE p_type, std::string p_obj_path, GLuint p_shader_program) : name(p_name), position(p_position), type(p_type), shader_program(p_shader_program) {
+    Object::Load(p_obj_path);
 }
 
 //=============================
@@ -22,7 +22,7 @@ void Object::Verify() {
     }
 }
 
-void Object::Load(std::string obj_path, GLuint shader_program) {
+void Object::Load(std::string obj_path) {
     triangles[shader_program] = Object::_Read(obj_path);
 }
 
@@ -34,6 +34,49 @@ void Object::Render() {
             triangle.Render();
         }
     }
+}
+
+//=============================
+// POSITIONAL FUNCTIONS
+//=============================
+
+glm::vec3 Object::GetPosition() {
+    return glm::vec3(model_matrix[3][0], model_matrix[3][1], model_matrix[3][2]);
+}
+
+bool Object::IsVisible(glm::mat4 view_projection_matrix) {
+    glm::vec3 half_size = size * 0.5f;
+
+    glm::vec3 adjusted_position = Object::GetPosition();
+
+    // calculates every corner of the object
+    std::vector<glm::vec3> corners = {};
+
+    corners = {
+        adjusted_position + glm::vec3(-half_size.x, -half_size.y, -half_size.z), // min x, min y, min z
+        adjusted_position + glm::vec3( half_size.x, -half_size.y, -half_size.z), // max x, min y, min z
+        adjusted_position + glm::vec3( half_size.x,  half_size.y, -half_size.z), // max x, max y, min z
+        adjusted_position + glm::vec3(-half_size.x,  half_size.y, -half_size.z), // min x, max y, min z
+        adjusted_position + glm::vec3(-half_size.x, -half_size.y,  half_size.z), // min x, min y, max z
+        adjusted_position + glm::vec3( half_size.x, -half_size.y,  half_size.z), // max x, min y, max z
+        adjusted_position + glm::vec3( half_size.x,  half_size.y,  half_size.z), // max x, max y, max z
+        adjusted_position + glm::vec3(-half_size.x,  half_size.y,  half_size.z)  // min x, max y, max z
+    };
+    
+    for (auto corner : corners) {
+        glm::vec4 clip_space_position = view_projection_matrix * glm::vec4(corner, 1.0f);
+        // normalize to -1 thru 1 by the transformation value
+        clip_space_position /= clip_space_position.w;
+    
+        // return if within screen bounds
+        if ((clip_space_position.x >= -1.0f && clip_space_position.x <= 1.0f) &&
+            (clip_space_position.y >= -1.0f && clip_space_position.y <= 1.0f) &&
+            (clip_space_position.z >= -1.0f && clip_space_position.z <= 1.0f)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 //=============================

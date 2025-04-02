@@ -33,7 +33,7 @@ ZANE WEBSTER
 #include "CameraHandler.h"
 #include "Triangle.h"
 #include "Object.h"
-#include "Grid.h"
+#include "ObjectHandler.h"
 
 int main(int argc, char* argv[]) {
     ////////// APP INITILIZATION
@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
     AudioHandler audio_handler;
     ShaderHandler shader_handler(window_handler.context);
     CameraHandler camera({0.0f, 0.0f, 6.0f}, window_handler.width, window_handler.height, 0.025f, 0.1f, 70.0f);
+    ObjectHandler object_handler;
 
     ////////// APP VARIABLES
     //// GENERAL
@@ -58,9 +59,6 @@ int main(int argc, char* argv[]) {
     TotalFrame::KEYSET keyset = TotalFrame::KEYSET::WASD;
     MOVEMENT_KEYSET movement_keys = TotalFrame::MOVEMENT_KEYS[keyset];
 
-    ////////// LOAD SHADERS
-    shader_handler.ReadShaderSourceFolder("res/shader");
-
     ////////// LOAD IMAGES
 
     ////////// LOAD RECTS
@@ -72,9 +70,9 @@ int main(int argc, char* argv[]) {
     ////////// GAME VARIABLES
 
     ////////// GAME OBJECTS
-    GLuint test_sp = shader_handler.CreateShaderProgram();
+    GLuint cube_sp = shader_handler.CreateShaderProgram("res/cube_shader");
 
-    Object cube("test", TotalFrame::OBJECT_TYPE::BASIC_OBJ, "res/tfobj/cube.tfobj", test_sp);
+    object_handler.Create("cube", {0.0f, 0.0f, 0.0f}, TotalFrame::OBJECT_TYPE::BASIC_OBJ, "res/tfobj/cube.tfobj", cube_sp);
 
     ////////// TEXT
 
@@ -167,12 +165,9 @@ int main(int argc, char* argv[]) {
             if (window_handler.StartRender()) {
                 window_handler.Clear();
 
-                cube.Render();
-                cube.Verify();
+                camera.UpdateShaderPrograms(object_handler.GetShaderProgramsUpdates(camera.GetViewProjectionMatrix()));
 
-                glUseProgram(test_sp);
-                
-                camera.Update(test_sp);
+                object_handler.RenderAll(camera.GetViewProjectionMatrix());
 
                 window_handler.Update();
                 window_handler.EndRender();
@@ -184,8 +179,7 @@ int main(int argc, char* argv[]) {
     window_handler.FreeAll();
     audio_handler.FreeAll();
     shader_handler.FreeAll();
-
-    cube.FreeAll();
+    object_handler.FreeAll();
     
     SDL_Quit();
     Mix_Quit();
